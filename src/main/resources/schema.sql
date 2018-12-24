@@ -1,21 +1,21 @@
-CREATE TABLE line_delays (
+CREATE TABLE IF NOT EXISTS line_delays (
  id BIGINT PRIMARY KEY,
  line_id BIGINT ,
  delay BIGINT
 );
 
-CREATE TABLE lines (
+CREATE TABLE IF NOT EXISTS lines (
  line_id BIGINT PRIMARY KEY,
  line_name VARCHAR
 );
 
-CREATE TABLE stops (
+CREATE TABLE IF NOT EXISTS stops (
  stop_id BIGINT PRIMARY KEY,
  x DECIMAL(5, 2),
  y DECIMAL(5, 2)
 );
 
-CREATE TABLE line_timings (
+CREATE TABLE IF NOT EXISTS line_timings (
  id IDENTITY,
  line_id BIGINT,
  stop_id BIGINT,

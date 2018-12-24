@@ -8,3 +8,6 @@
 ## Assumptions
 1. The unit of line delay is minutes.
 1. Timezone conversions are not considered. All the timings are local.
+
+## Running the application
+1. mvn spring-boot:run

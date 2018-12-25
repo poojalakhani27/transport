@@ -10,16 +10,13 @@ import com.mobimeo.transport.repository.LineTimingRepository
 import com.mobimeo.transport.repository.StopRepository
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
-import org.springframework.context.ApplicationContext
 import org.springframework.stereotype.Component
-import java.io.File
 import org.springframework.util.ResourceUtils
+import java.io.File
 import java.nio.charset.Charset
 import java.sql.Time
-import javax.transaction.Transactional
 
 
 @Component
@@ -28,8 +25,6 @@ class DBInitializer(private val lineRepository: LineRepository,
                     private val lineTimingRepository: LineTimingRepository,
                     private val lineDelayRepository: LineDelayRepository) : ApplicationRunner {
 
-    @Autowired
-    lateinit var applicationContext : ApplicationContext;
 
     override fun run(args: ApplicationArguments?) {
         loadLines()
@@ -46,6 +41,7 @@ class DBInitializer(private val lineRepository: LineRepository,
 
         lineRepository.saveAll(lines)
     }
+
     private fun loadStops() {
         val csvContent = parseCsv("stops.csv")
         val stops = csvContent.drop(1).map {
@@ -60,7 +56,7 @@ class DBInitializer(private val lineRepository: LineRepository,
         val lineTimings = csvContent.drop(1).map {
             val line = lineRepository.findById(it.get(0).toLong()).get()
             val stop = stopRepository.findById(it.get(1).toLong()).get()
-            LineTiming(line , stop, Time.valueOf(it.get(2)))
+            LineTiming(line, stop, Time.valueOf(it.get(2)))
         }
 
         lineTimingRepository.saveAll(lineTimings)
@@ -70,17 +66,15 @@ class DBInitializer(private val lineRepository: LineRepository,
         val csvContent = parseCsv("delays.csv")
         val lineDelays = csvContent.drop(1).map {
             val line = lineRepository.findByLineName(it.get(0))
-//            line.lineDelay = LineDelay(line, it.get(1).toLong(), line.lineId)
             val lineDelay = LineDelay(line, it.get(1).toLong(), line.lineId)
-//            lineRepository.save(line)
             lineDelay
         }
 
         lineDelayRepository.saveAll(lineDelays)
     }
 
-    private fun parseCsv(fileName : String): CSVParser {
+    private fun parseCsv(fileName: String): CSVParser {
         val file: File = ResourceUtils.getFile("classpath:" + fileName);
-        return CSVParser.parse(file, Charset.defaultCharset(),  CSVFormat.EXCEL)
+        return CSVParser.parse(file, Charset.defaultCharset(), CSVFormat.EXCEL)
     }
 }

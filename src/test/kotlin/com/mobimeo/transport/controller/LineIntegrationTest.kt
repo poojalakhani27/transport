@@ -37,12 +37,6 @@ import java.time.*
 internal class LineIntegrationTest {
 
     @Autowired
-    lateinit var testRestTemplate: TestRestTemplate
-
-    @Autowired
-    lateinit var env: Environment;
-
-    @Autowired
     lateinit var mvc:MockMvc;
 
     @MockBean

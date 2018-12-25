@@ -7,6 +7,6 @@ import org.springframework.boot.runApplication
 class TransportApplication
 
 fun main(args: Array<String>) {
-	runApplication<TransportApplication>(*args)
+    runApplication<TransportApplication>(*args)
 }
 
